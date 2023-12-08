@@ -1,5 +1,7 @@
-from flask import Flask
-from requests import Response
+import base64
+from flask import Flask, send_file, Response
+from PIL import Image
+import io
 from imagegen import generate_image
 
 app = Flask(__name__)
@@ -11,8 +13,8 @@ def homepage():
 # add api call for get image
 @app.route('/api/get_image')
 def get_image():
-    file = generate_image("A cute cat", "UPDATE-KEY", test=True)
-    return Response(file.read(), mimetype='image/png') 
+    img = generate_image("A cute cat")
+    return send_file(img, mimetype='image/png')
 # upload file to caller
 
 if __name__ == '__main__':

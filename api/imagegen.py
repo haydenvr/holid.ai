@@ -1,12 +1,13 @@
 import base64
 import requests
 import base64
+import io
 import os
 
 api_key = "UPDATE-KEY"
-def generate_image(text, api_key, test = True, engine_id="stable-diffusion-v1-6", api_host="https://api.stability.ai"):
+def generate_image(text, test = True, engine_id="stable-diffusion-v1-6", api_host="https://api.stability.ai"):
         if test:
-            return open("./imagegen/out/v1_txt2img_0.png", "r")
+            return open("./api/out/v1_txt2img_0.png", "rb")
         
         print("Generating image")
         response = requests.post(
@@ -35,7 +36,10 @@ def generate_image(text, api_key, test = True, engine_id="stable-diffusion-v1-6"
 
         data = response.json()
 
-        return base64.b64decode(data["artifacts"][0]["base64"])
+        img_data = base64.b64decode(data["artifacts"][0]["base64"])
+        img_io = io.BytesIO(img_data)
+        img_io.seek(0)
+        return img_io
 
 if __name__ == "__main__":
     print(generate_image("A cute cat", api_key))
