@@ -4,8 +4,10 @@ import base64
 import os
 
 api_key = "UPDATE-KEY"
-class ImageGen:
-    def generate_image(text, api_key, engine_id="stable-diffusion-v1-6", api_host="https://api.stability.ai"):
+def generate_image(text, api_key, test = True, engine_id="stable-diffusion-v1-6", api_host="https://api.stability.ai"):
+        if test:
+            return f'./out/v1_txt2img_0.png'
+        
         response = requests.post(
             f"{api_host}/v1/generation/{engine_id}/text-to-image",
             headers={
@@ -39,4 +41,4 @@ class ImageGen:
         return f"./out/v1_txt2img_{i}.png"
 
 if __name__ == "__main__":
-    ImageGen.generate_image("A cute cat", api_key)
+    print(generate_image("A cute cat", api_key))
